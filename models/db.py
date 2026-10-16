@@ -64,16 +64,26 @@ CREATE INDEX IF NOT EXISTS idx_students_class ON students(class);
 
 # --- Connection ---
 
+'''This optimizes the test environment to use in-memory database. But doesn't persist.
+def get_connection():
+    """Open a connection to the database."""
+    import os
+    # Use an in-memory database during tests (much faster)
+    db_path = ":memory:" if os.environ.get("SCHOOL_TRACKER_TEST") else DB_PATH
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA foreign_keys = ON")
+    return conn'''
+
 def get_connection():
     """
     Open a connection to the database.
     Enables foreign key enforcement (SQLite disables it by default).
     """
     conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row  # rows behave like dicts
+    conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
     return conn
-
 
 @contextmanager
 def get_cursor(commit=False):
