@@ -21,3 +21,6 @@ Thumbs.db
 # Editor
 .vscode/
 .idea/
+
+# Test scripts
+test_tracker.py
