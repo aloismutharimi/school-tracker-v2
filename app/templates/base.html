@@ -13,9 +13,8 @@
     </div>
     <nav class="nav-row">
         <a href="{{ url_for('dashboard.home') }}" class="{% if request.endpoint == 'dashboard.home' %}active{% endif %}">Dashboard</a>
-    
+        <a href="{{ url_for('students.index') }}" class="{% if request.endpoint == 'students.index' %}active{% endif %}">Students</a>
         <!-- We will add these back when we build the blueprints
-        <a href="#">Students</a>
         <a href="#">Add Student</a>
         <a href="#">Record Payment</a>
         <a href="#">Record Score</a>

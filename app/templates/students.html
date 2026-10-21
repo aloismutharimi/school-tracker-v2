@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Students · School Tracker{% endblock %}
+
+{% block content %}
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+        <div>
+            <h1>Students</h1>
+            <p class="page-sub">{{ students|length }} on record for {{ term }}</p>
+        </div>
+        <a href="{{ url_for('students.add_edit') }}" class="btn">+ Add Student</a>
+    </div>
+
+    {% if students %}
+        <div class="card" style="padding:0;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Class</th>
+                        <th>Guardian Phone</th>
+                        <th>Balance</th>
+                        <th>Status</th>
+                        <th style="width:60px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for s in students %}
+                    <tr>
+                        <td><code style="color:#94a3b8;font-size:0.85rem;">{{ s.id }}</code></td>
+                        <td><strong>{{ s.name }}</strong></td>
+                        <td>{{ s.class }}</td>
+                        <td style="color:#94a3b8;">{{ s.guardian_phone or '—' }}</td>
+                        <td class="{% if s.in_arrears %}amount-warn{% else %}amount-ok{% endif %}">
+                            {{ "{:,.0f}".format(s.balance) }}
+                        </td>
+                        <td>
+                            {% if s.in_arrears %}
+                                <span class="badge warn">Arrears</span>
+                            {% else %}
+                                <span class="badge ok">Cleared</span>
+                            {% endif %}
+                        </td>
+                        <td style="text-align:right;">
+                            <div class="row-menu">
+                                <button type="button" class="menu-btn" onclick="toggleMenu('{{ s.id }}', event)">⋮</button>
+                                <div class="menu-dropdown" id="menu-{{ s.id }}">
+                                    <a href="{{ url_for('students.add_edit', student_id=s.id) }}">✎ Edit</a>
+                                    <form method="POST" action="{{ url_for('students.delete', student_id=s.id) }}"
+                                          onsubmit="return confirm('Delete {{ s.name }} ({{ s.id }}) and all their payment and score records? This cannot be undone.');"
+                                          style="margin:0;">
+                                        <button type="submit" class="menu-delete">🗑 Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="card">
+            <p class="empty">No students yet. Add one to get started.</p>
+            <div style="text-align:center;margin-top:1rem;">
+                <a href="{{ url_for('students.add_edit') }}" class="btn">Add First Student</a>
+            </div>
+        </div>
+    {% endif %}
+
+    <script>
+        function toggleMenu(studentId, event) {
+            event.stopPropagation();
+            const menu = document.getElementById('menu-' + studentId);
+            const isOpen = menu.classList.contains('open');
+            // Close all menus first
+            document.querySelectorAll('.menu-dropdown').forEach(m => m.classList.remove('open'));
+            if (!isOpen) menu.classList.add('open');
+        }
+
+        // Close any open menu when clicking outside
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.menu-dropdown').forEach(m => m.classList.remove('open'));
+        });
+    </script>
+{% endblock %}

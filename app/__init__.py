@@ -13,6 +13,9 @@ def create_app():
 
     # Register blueprints
     from app.dashboard import bp as dashboard_bp
+    from app.students import bp as students_bp
+
     app.register_blueprint(dashboard_bp)
+    app.register_blueprint(students_bp)
 
     return app
