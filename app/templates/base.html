@@ -17,6 +17,7 @@
         <a href="{{ url_for('students.add_edit') }}" class="{% if request.endpoint == 'add_student.index' %}active{% endif %}">Add Student</a>
         <a href="{{ url_for('payments.add_payment') }}" class="...">Record Payments</a>
         <a href="{{ url_for('scores.add_score') }}" class="...">Record Scores</a>
+        <a href="{{ url_for('reports.index') }}" class="{% if request.endpoint == 'reports.index' %}active{% endif %}">Reports</a>
         <!-- We will add these back when we build the blueprints
         <a href="#">Add Student</a>
         <a href="#">Record Payment</a>
