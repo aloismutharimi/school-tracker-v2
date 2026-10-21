@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}School Tracker{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header>
+    <div class="brand-row">
+        <a href="{{ url_for('dashboard.home') }}" class="brand">School Tracker</a>
+    </div>
+    <nav class="nav-row">
+        <a href="{{ url_for('dashboard.home') }}" class="{% if request.endpoint == 'dashboard.home' %}active{% endif %}">Dashboard</a>
+    
+        <!-- We will add these back when we build the blueprints
+        <a href="#">Students</a>
+        <a href="#">Add Student</a>
+        <a href="#">Record Payment</a>
+        <a href="#">Record Score</a>
+        <a href="#">Reports</a>
+        -->
+    </nav>
+</header>
+
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="alert {{ category }}">
+                    <span class="alert-icon">{% if category == 'success' %}✓{% else %}!{% endif %}</span>
+                    <span class="alert-text">{{ message }}</span>
+                </div>
+            {% endfor %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+         · School Fees &amp; Results Tracker · Built by Sayari Software Solutions · <a href="
+    </footer>
+</body>
+</html>
