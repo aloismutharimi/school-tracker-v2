@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Enter Scores · {{ student_class }}{% endblock %}
+
+{% block content %}
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+        <div>
+            <h1>Enter Scores: {{ subject }}</h1>
+            <p class="page-sub">{{ student_class }} · {{ term }}</p>
+        </div>
+        <a href="{{ url_for('scores.bulk_select') }}" class="btn secondary">← Back</a>
+    </div>
+
+    <div class="card" style="padding: 0;">
+        <form method="POST">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th style="width: 150px;">Score (out of 100)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for s in students %}
+                    <tr>
+                        <td><strong>{{ s.name }}</strong> <span style="color:#94a3b8; font-size:0.8rem;">({{ s.id }})</span></td>
+                        <td>
+                            <input type="number" name="score_{{ s.id }}" min="0" max="100" step="1"
+                                   style="width: 100%; padding: 0.5rem; background: rgba(255,255,255,0.06); border: 1px solid #2b4a66; border-radius: 6px; color: white;">
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <div style="padding: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); text-align: center;">
+                <button type="submit" class="btn" style="font-size: 1rem; padding: 0.8rem 2rem;">Save All Scores</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

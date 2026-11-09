@@ -58,6 +58,8 @@
     <a href="{{ url_for('payments.add_payment') }}" class="{% if request.endpoint == 'payments.add_payment' %}active{% endif %}">Record Payments</a>
     
     <a href="{{ url_for('scores.add_score') }}" class="{% if request.endpoint == 'scores.add_score' %}active{% endif %}">Record Scores</a>
+
+    <a href="{{ url_for('scores.bulk_select') }}" class="{% if request.endpoint == 'scores.bulk_select' %}active{% endif %}">Bulk Entry</a>
     
     <a href="{{ url_for('reports.index') }}" class="{% if request.endpoint == 'reports.index' %}active{% endif %}">Reports</a>
     </nav>

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Bulk Score Entry · School Tracker{% endblock %}
+
+{% block content %}
+    <h1>Bulk Score Entry</h1>
+    <p class="page-sub">Select a class and subject to enter scores for all students at once.</p>
+
+    <div class="card">
+        <form method="POST" class="form-grid">
+            <div class="field">
+                <label for="class">Class <span style="color:#f87171;">*</span></label>
+                <select name="class" id="class" required>
+                    <option value="">— Select Class —</option>
+                    {% for c in classes %}
+                        <option value="{{ c }}">{{ c }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="subject">Subject <span style="color:#f87171;">*</span></label>
+                <input type="text" name="subject" id="subject" placeholder="e.g. Mathematics" required>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn">Open Gradebook →</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
