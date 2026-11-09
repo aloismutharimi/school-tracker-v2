@@ -10,6 +10,43 @@
 <header>
     <div class="brand-row">
         <a href="{{ url_for('dashboard.home') }}" class="brand">School Tracker</a>
+        <!-- Term Switcher -->
+        <form method="POST" action="{{ url_for('dashboard.switch_term') }}" style="position: absolute; right: 20px; top: 25px; display: flex; gap: 0.5rem; align-items: center;">
+            <select name="term" id="term-selector" onchange="handleTermChange(this)" style="padding: 0.3rem 0.6rem; border-radius: 6px; background: #14274a; color: white; border: 1px solid #2b4a66; font-size: 0.85rem; cursor: pointer;">
+        {% for t in all_terms %}
+                <option value="{{ t.id }}" {% if current_term == t.id %}selected{% endif %}>{{ t.id }}</option>
+        {% endfor %}
+                <option value="NEW_TERM" style="color: #4ade80; font-weight: bold;">+ Add New Term</option>
+            </select>
+            <input type="hidden" name="action" id="term-action" value="switch">
+        </form>
+
+<script>
+    function handleTermChange(select) {
+        if (select.value === 'NEW_TERM') {
+            const newTerm = prompt("Enter the new term (e.g., 2026-T1 or 2027-T1):");
+            if (newTerm && newTerm.trim() !== "") {
+                // Add the new term to the dropdown dynamically
+                const option = document.createElement('option');
+                option.value = newTerm.trim();
+                option.text = newTerm.trim();
+                select.add(option, select.options[select.length - 1]); // Insert before "Add New"
+                select.value = newTerm.trim();
+                
+                // Set action to create and submit
+                document.getElementById('term-action').value = 'create';
+                select.form.submit();
+            } else {
+                // Reset back to current term if they cancel
+                select.value = "{{ current_term }}";
+            }
+        } else {
+            // Normal switch
+            document.getElementById('term-action').value = 'switch';
+            select.form.submit();
+        }
+    }
+</script>
     </div>
     <nav class="nav-row">
     <a href="{{ url_for('dashboard.home') }}" class="{% if request.endpoint == 'dashboard.home' %}active{% endif %}">Dashboard</a>

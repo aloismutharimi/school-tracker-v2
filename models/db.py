@@ -16,6 +16,12 @@ from config import DB_PATH
 # --- Schema ---
 
 SCHEMA = """
+
+CREATE TABLE IF NOT EXISTS terms (
+    id TEXT PRIMARY KEY,
+    is_active INTEGER DEFAULT 0
+);
+
 CREATE TABLE IF NOT EXISTS students (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,

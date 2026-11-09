@@ -8,9 +8,18 @@ def create_app():
     # Context processor to make variables available in all templates
     @app.context_processor
     def inject_globals():
-        from config import DEFAULT_TERM, APP_NAME
-        return {"current_term": DEFAULT_TERM, "app_name": APP_NAME}
-
+        from config import APP_NAME
+        from models.terms import get_active_term, list_terms
+        
+        active_term = get_active_term()
+        all_terms = list_terms()
+        
+        return {
+            "current_term": active_term, 
+            "all_terms": all_terms,
+            "app_name": APP_NAME
+        }
+    
     # Register blueprints
     from app.dashboard import bp as dashboard_bp
     from app.students import bp as students_bp

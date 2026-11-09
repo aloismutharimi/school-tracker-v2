@@ -1,12 +1,12 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from models import students, payments
-from config import DEFAULT_TERM
+from models.terms import get_active_term
 
 bp = Blueprint("payments", __name__, url_prefix="/payments")
 
 @bp.route("/new", methods=["GET", "POST"])
 def add_payment():
-    term = DEFAULT_TERM
+    term = get_active_term()
     # Sort students by class, then name for the dropdown
     all_students = sorted(students.list_all(), key=lambda s: (s["class"], s["name"]))
 

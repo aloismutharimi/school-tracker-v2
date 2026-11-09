@@ -1,12 +1,12 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from models import students, scores
-from config import DEFAULT_TERM
+from models.terms import get_active_term
 
 bp = Blueprint("scores", __name__, url_prefix="/scores")
 
 @bp.route("/new", methods=["GET", "POST"])
 def add_score():
-    term = DEFAULT_TERM
+    term = get_active_term()
     all_students = sorted(students.list_all(), key=lambda s: (s["class"], s["name"]))
     subjects = ["Mathematics", "English", "Kiswahili", "Science", "Social Studies", "CRE"]
 

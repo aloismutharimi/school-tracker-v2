@@ -1,14 +1,14 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from models import students as student_model
+from models.terms import get_active_term
 from services.tracker import compute_balance
-from config import DEFAULT_TERM
 
 bp = Blueprint("students", __name__, url_prefix="/students")
 
 @bp.route("/")
 def index():
     """List all students with their fee balances."""
-    term = DEFAULT_TERM
+    term = get_active_term()
     all_students = student_model.list_all()
     
     # Calculate balance for each student for the current term
