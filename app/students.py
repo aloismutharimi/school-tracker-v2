@@ -1,3 +1,5 @@
+import csv
+import io
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from models import students as student_model
 from models.terms import get_active_term
@@ -113,3 +115,51 @@ def delete(student_id):
         flash(str(e), "error")
 
     return redirect(url_for("students.index"))
+
+@bp.route("/import", methods=["GET", "POST"])
+def import_csv():
+    if request.method == "POST":
+        if "csv_file" not in request.files:
+            flash("No file uploaded.", "error")
+            return redirect(request.url)
+            
+        file = request.files["csv_file"]
+        if file.filename == "":
+            flash("No file selected.", "error")
+            return redirect(request.url)
+            
+        if file and file.filename.endswith(".csv"):
+            try:
+                # Read the file stream
+                stream = io.StringIO(file.stream.read().decode("UTF8"), newline=None)
+                csv_input = csv.DictReader(stream)
+                
+                # Validate headers
+                expected_headers = {"id", "name", "class"}
+                if not expected_headers.issubset(csv_input.fieldnames):
+                    flash("CSV must contain 'id', 'name', and 'class' columns.", "error")
+                    return redirect(request.url)
+                
+                # Process rows
+                student_list = []
+                for row in csv_input:
+                    student_list.append({
+                        "id": row["id"].strip(),
+                        "name": row["name"].strip(),
+                        "class": row["class"].strip(),
+                        "guardian_phone": row.get("guardian_phone", "").strip()
+                    })
+                
+                added = student_model.bulk_create(student_list)
+                flash(f"Successfully imported {added} students.", "success")
+                return redirect(url_for("students.index"))
+                
+            except Exception as e:
+                flash(f"Error reading CSV: {str(e)}", "error")
+                return redirect(request.url)
+        else:
+            flash("Please upload a valid .csv file.", "error")
+            return redirect(request.url)
+
+    # GET request: show the upload form
+    return render_template("import_students.html")

@@ -4,6 +4,7 @@ Student records.
 All functions return plain dicts or lists of dicts, not sqlite3.Row objects.
 That keeps the rest of the app decoupled from the database library.
 """
+import sqlite3
 from datetime import datetime
 
 from models.db import get_cursor
@@ -108,3 +109,28 @@ def known_classes():
     with get_cursor() as cur:
         cur.execute("SELECT DISTINCT class FROM students ORDER BY class")
         return [row["class"] for row in cur.fetchall()]
+
+def bulk_create(student_list):
+    """
+    Insert multiple students at once.
+    Expects a list of dicts with keys: id, name, class, guardian_phone.
+    Returns the number of successfully added students.
+    """
+    from datetime import datetime
+    now = datetime.now().isoformat(timespec="seconds")
+    added_count = 0
+
+    with get_cursor(commit=True) as cur:
+        for s in student_list:
+            try:
+                cur.execute(
+                    "INSERT INTO students (id, name, class, guardian_phone, created_at) "
+                    "VALUES (?, ?, ?, ?, ?)",
+                    (s["id"], s["name"], s["class"], s.get("guardian_phone", ""), now)
+                )
+                added_count += 1
+            except sqlite3.IntegrityError:
+                # Skip duplicates silently (or we could log them)
+                continue
+                
+    return added_count

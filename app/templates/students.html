@@ -8,6 +8,7 @@
             <h1>Students</h1>
             <p class="page-sub">{{ students|length }} on record for {{ term }}</p>
         </div>
+        <a href="{{ url_for('students.import_csv') }}" class="btn secondary">Import CSV</a>
         <a href="{{ url_for('students.add_edit') }}" class="btn">+ Add Student</a>
     </div>
 

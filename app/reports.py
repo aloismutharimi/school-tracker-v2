@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 import os
 
 from models import students
+from models.terms import get_active_term
 from services.tracker import build_finance_data, build_performance_data
 from services.pdf_report import export_full_pdf, export_student_pdf
 from config import DEFAULT_TERM, DATA_DIR
@@ -10,7 +11,7 @@ bp = Blueprint("reports", __name__, url_prefix="/reports")
 
 @bp.route("/", methods=["GET", "POST"])
 def index():
-    term = DEFAULT_TERM
+    term = get_active_term()
     all_students = sorted(students.list_all(), key=lambda s: (s["class"], s["name"]))
     classes = sorted({s["class"] for s in all_students})
 
@@ -61,7 +62,7 @@ def index():
 
 @bp.route("/download")
 def download():
-    term = DEFAULT_TERM
+    term = get_active_term()
     fmt = request.args.get("format", "pdf").lower()
     student_id = request.args.get("student", "").strip() or None
 

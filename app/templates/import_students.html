@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Import Students · School Tracker{% endblock %}
+
+{% block content %}
+    <h1>Import Students</h1>
+    <p class="page-sub">Upload a CSV file to add multiple students at once.</p>
+
+    <div class="card">
+        <form method="POST" enctype="multipart/form-data" class="form-grid">
+            <div class="field">
+                <label for="csv_file">Select CSV File <span style="color:#f87171;">*</span></label>
+                <input type="file" id="csv_file" name="csv_file" accept=".csv" required style="padding: 0.5rem; background: rgba(255,255,255,0.06); border: 1.5px solid #2b4a66; border-radius: 8px;">
+                <small style="color:#94a3b8; margin-top: 0.5rem; display: block;">
+                    Required columns: <code>id</code>, <code>name</code>, <code>class</code>. Optional: <code>guardian_phone</code>.
+                </small>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn">Upload & Import</button>
+                <a href="{{ url_for('students.index') }}" class="btn secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}
