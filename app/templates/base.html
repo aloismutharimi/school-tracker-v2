@@ -12,18 +12,17 @@
         <a href="{{ url_for('dashboard.home') }}" class="brand">School Tracker</a>
     </div>
     <nav class="nav-row">
-        <a href="{{ url_for('dashboard.home') }}" class="{% if request.endpoint == 'dashboard.home' %}active{% endif %}">Dashboard</a>
-        <a href="{{ url_for('students.index') }}" class="{% if request.endpoint == 'students.index' %}active{% endif %}">Students</a>
-        <a href="{{ url_for('students.add_edit') }}" class="{% if request.endpoint == 'add_student.index' %}active{% endif %}">Add Student</a>
-        <a href="{{ url_for('payments.add_payment') }}" class="...">Record Payments</a>
-        <a href="{{ url_for('scores.add_score') }}" class="...">Record Scores</a>
-        <a href="{{ url_for('reports.index') }}" class="{% if request.endpoint == 'reports.index' %}active{% endif %}">Reports</a>
-        <!-- We will add these back when we build the blueprints
-        <a href="#">Add Student</a>
-        <a href="#">Record Payment</a>
-        <a href="#">Record Score</a>
-        <a href="#">Reports</a>
-        -->
+    <a href="{{ url_for('dashboard.home') }}" class="{% if request.endpoint == 'dashboard.home' %}active{% endif %}">Dashboard</a>
+    
+    <a href="{{ url_for('students.index') }}" class="{% if request.endpoint == 'students.index' %}active{% endif %}">Students</a>
+    
+    <a href="{{ url_for('students.add_edit') }}" class="{% if request.endpoint == 'students.add_edit' %}active{% endif %}">Add Student</a>
+    
+    <a href="{{ url_for('payments.add_payment') }}" class="{% if request.endpoint == 'payments.add_payment' %}active{% endif %}">Record Payments</a>
+    
+    <a href="{{ url_for('scores.add_score') }}" class="{% if request.endpoint == 'scores.add_score' %}active{% endif %}">Record Scores</a>
+    
+    <a href="{{ url_for('reports.index') }}" class="{% if request.endpoint == 'reports.index' %}active{% endif %}">Reports</a>
     </nav>
 </header>
 
