@@ -113,3 +113,16 @@ def delete(payment_id):
         cur.execute("DELETE FROM payments WHERE id = ?", (payment_id,))
 
     return payment
+
+def list_recent_with_names(term, limit=10):
+    """Return the most recent payments, joined with student names."""
+    with get_cursor() as cur:
+        cur.execute(
+            "SELECT p.id, p.student_id, s.name AS student_name, p.amount, p.method, p.date "
+            "FROM payments p "
+            "JOIN students s ON s.id = p.student_id "
+            "WHERE p.term = ? "
+            "ORDER BY p.id DESC LIMIT ?",
+            (term, limit)
+        )
+        return [dict(row) for row in cur.fetchall()]

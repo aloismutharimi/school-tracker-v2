@@ -38,4 +38,14 @@ def add_payment():
             flash(str(e), "error")
             return render_template("add_payment.html", students=all_students, form=request.form, term=term)
 
-    return render_template("add_payment.html", students=all_students, form={}, term=term)
+    recent_payments = payments.list_recent_with_names(term)
+    return render_template("add_payment.html", students=all_students, form={}, term=term, recent=recent_payments)
+
+@bp.route("/<int:payment_id>/delete", methods=["POST"])
+def delete_payment(payment_id):
+    try:
+        payments.delete(payment_id)
+        flash("Payment deleted successfully.", "success")
+    except ValueError as e:
+        flash(str(e), "error")
+    return redirect(url_for("payments.add_payment"))

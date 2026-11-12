@@ -125,3 +125,16 @@ def delete(score_id):
         cur.execute("DELETE FROM scores WHERE id = ?", (score_id,))
 
     return score
+
+def list_recent_with_names(term, limit=10):
+    """Return the most recent scores, joined with student names."""
+    with get_cursor() as cur:
+        cur.execute(
+            "SELECT sc.id, sc.student_id, s.name AS student_name, sc.subject, sc.score, sc.out_of "
+            "FROM scores sc "
+            "JOIN students s ON s.id = sc.student_id "
+            "WHERE sc.term = ? "
+            "ORDER BY sc.id DESC LIMIT ?",
+            (term, limit)
+        )
+        return [dict(row) for row in cur.fetchall()]

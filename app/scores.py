@@ -39,7 +39,8 @@ def add_score():
             flash(str(e), "error")
             return render_template("add_score.html", students=all_students, subjects=subjects, form=request.form, term=term)
 
-    return render_template("add_score.html", students=all_students, subjects=subjects, form={}, term=term)
+    recent_scores = scores.list_recent_with_names(term)
+    return render_template("add_score.html", students=all_students, subjects=subjects, form={}, term=term, recent=recent_scores)
 
 @bp.route("/bulk", methods=["GET", "POST"])
 def bulk_select():
@@ -95,9 +96,20 @@ def bulk_entry():
                     
         flash(f"Successfully saved {saved_count} scores for {subject}.", "success")
         return redirect(url_for("scores.bulk_select"))
-        
+    
+    recent_scores = scores.list_recent_with_names(term)
     return render_template("scores_bulk_entry.html", 
                            students=class_students, 
                            student_class=student_class, 
                            subject=subject, 
-                           term=term)
+                           term=term,
+                           recent=recent_scores)
+
+@bp.route("/<int:score_id>/delete", methods=["POST"])
+def delete_score(score_id):
+    try:
+        scores.delete(score_id)
+        flash("Score deleted successfully.", "success")
+    except ValueError as e:
+        flash(str(e), "error")
+    return redirect(url_for("scores.add_score"))

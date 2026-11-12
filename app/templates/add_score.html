@@ -53,27 +53,33 @@
         </div>
 
         {% if recent %}
-            <h2>Recent scores ({{ term }})</h2>
-            <div class="card" style="padding:0;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Student</th>
-                            <th>Subject</th>
-                            <th>Score</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for r in recent %}
-                        <tr>
-                            <td><strong>{{ r.student_name }}</strong></td>
-                            <td>{{ r.subject }}</td>
-                            <td style="color:#4ade80;font-weight:600;">{{ r.score|int }}/{{ r.out_of|int }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        {% endif %}
+    <h2 style="margin-top: 2rem;">Recent Scores ({{ term }})</h2>
+    <div class="card" style="padding: 0; margin-top: 1rem;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Subject</th>
+                    <th>Score</th>
+                    <th style="text-align:right;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in recent %}
+                <tr>
+                    <td><strong>{{ s.student_name }}</strong></td>
+                    <td>{{ s.subject }}</td>
+                    <td style="color:#4ade80; font-weight:600;">{{ s.score|int }}/{{ s.out_of|int }}</td>
+                    <td style="text-align:right;">
+                        <form method="POST" action="{{ url_for('scores.delete_score', score_id=s.id) }}" style="display:inline;" onsubmit="return confirm('Delete this score?');">
+                            <button type="submit" style="background:none; border:none; color:#f87171; cursor:pointer; font-size:0.85rem;">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}
     {% endif %}
 {% endblock %}
