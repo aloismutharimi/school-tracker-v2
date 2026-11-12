@@ -1,6 +1,9 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+import os
+from flask import Blueprint, render_template, request, redirect, url_for, flash,  send_file
 from services.tracker import get_class_summary
 from models.terms import set_active_term, get_active_term, create_term
+from config import DB_PATH
+from datetime import datetime
 
 bp = Blueprint("dashboard", __name__)
 
@@ -30,3 +33,18 @@ def switch_term():
             flash(f"Switched to {term_input}", "success")
             
     return redirect(request.referrer or url_for("dashboard.home"))
+
+@bp.route("/backup")
+def backup():
+    """Download a copy of the SQLite database."""
+    if not os.path.exists(DB_PATH):
+        flash("Database file not found.", "error")
+        return redirect(url_for("dashboard.home"))
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H%M")
+    filename = f"school_tracker_backup_{timestamp}.db"    
+    return send_file(
+        DB_PATH,
+        as_attachment=True,
+        download_name=filename,
+        mimetype="application/x-sqlite3"
+    )

@@ -3,9 +3,15 @@
 {% block title %}Dashboard · School Tracker{% endblock %}
 
 {% block content %}
-    <h1>Dashboard</h1>
-    <p class="page-sub">School overview for {{ current_term }}</p>
-
+<div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 1.5rem;">
+    <div>
+        <h1>Dashboard</h1>
+        <p class="page-sub" style="margin-bottom: 0;">School overview for {{ current_term }}</p>
+    </div>
+    <a href="{{ url_for('dashboard.backup') }}" class="btn secondary" style="font-size: 0.85rem; padding: 0.5rem 1rem;">
+        ⬇ Backup Database
+    </a>
+</div>
     <div class="card-grid">
         <div class="stat">
             <div class="label">Students</div>
