@@ -46,7 +46,7 @@ def index():
             report_data = {
                 "title": form["student_id"] or form["class_filter"] or "Full School Report",
                 "is_solo": bool(form["student_id"]),
-                "finance": finance_data,
+                "fees": finance_data,
                 "performance": perf_data,
             }
 
