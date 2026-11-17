@@ -63,7 +63,6 @@ def index():
 @bp.route("/download")
 def download():
     term = get_active_term()
-    fmt = request.args.get("format", "pdf").lower()
     student_id = request.args.get("student", "").strip() or None
 
     try:
@@ -71,7 +70,7 @@ def download():
             # Generate Solo PDF
             path = export_student_pdf(student_id, term)
         else:
-            # Generate Full School PDF (You can expand this to support class filters later)
+            # Generate Full School PDF
             path = export_full_pdf(term)
             
         if not os.path.exists(path):

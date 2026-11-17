@@ -178,12 +178,8 @@
 <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:2rem 0 1rem;">
 
 <div class="form-actions" style="margin-top:1.5rem;justify-content:center;">
-    <a href="{{ url_for('reports.download') }}?format=csv&{{ query_base }}"
-       class="btn secondary">
-        ⬇ Download CSV
-    </a>
-    <a href="{{ url_for('reports.download', format='pdf', student=form.student_id) }}" class="btn secondary">
-    ⬇ Download PDF
+    <a href="{{ url_for('reports.download', format='pdf', student=form.student_id, class_filter=form.class_filter) }}" class="btn secondary">
+        ⬇ Download PDF
     </a>
 </div>
     {% endif %}
