@@ -5,6 +5,10 @@ def create_app():
     app = Flask(__name__)
     app.secret_key = SECRET_KEY
 
+    # Seed demo data if the database is empty
+    from scripts.demo_seed import seed_if_empty
+    seed_if_empty()
+
     # Context processor to make variables available in all templates
     @app.context_processor
     def inject_globals():

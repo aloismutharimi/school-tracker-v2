@@ -2,6 +2,3 @@ flask
 gunicorn
 pandas
 reportlab
-
-# Dev dependencies
-pytest
